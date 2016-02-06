@@ -22,5 +22,8 @@
   "bugs": {
     "url": "https://github.com/NealRame/Snake/issues"
   },
-  "homepage": "https://github.com/NealRame/Snake#readme"
+  "homepage": "https://github.com/NealRame/Snake#readme",
+  "devDependencies": {
+    "eslint": "^1.10.3"
+  }
 }
