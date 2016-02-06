@@ -4,6 +4,7 @@ const gulp = require('gulp');
 const gutil = require('gulp-util');
 const htmlmin = require('gulp-htmlmin');
 const path = require('path');
+const sass = require('gulp-sass');
 const source = require('vinyl-source-stream');
 const uglify = require('gulp-uglify');
 
@@ -11,12 +12,16 @@ const source_dir = path.join(__dirname, 'src');
 
 const html_source_path = path.join(source_dir, 'index.html');
 
+const sass_source_dir = path.join(source_dir, 'sass')
+const sass_source_path = path.join(sass_source_dir, 'style.scss');
+
 const js_source_dir = path.join(source_dir, 'js');
 const js_app_source_path = path.join(js_source_dir, 'main.js');
 
 const dest_dir = path.join(__dirname, 'public');
 const assets_dir = path.join(dest_dir, 'assets');
 const js_app_dest_dir = path.join(assets_dir, 'js');
+const css_dest_dir = path.join(assets_dir, 'css');
 
 gulp.task('html', () =>
     gulp.src(html_source_path)
@@ -45,3 +50,11 @@ gulp.task('js', () => {
 });
 
 gulp.task('default', ['js']);
+gulp.task('css', () =>
+    gulp.src(sass_source_path)
+        .pipe(sass({
+            includePaths: [sass_source_dir],
+            outputStyle: 'compressed'
+        }).on('error', sass.logError))
+        .pipe(gulp.dest(css_dest_dir))
+);
