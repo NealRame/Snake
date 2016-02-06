@@ -58,4 +58,4 @@ gulp.task('css', () =>
         .pipe(gulp.dest(css_dest_dir))
 );
 
-gulp.task('default', ['html', 'js']);
+gulp.task('default', ['css', 'html', 'js']);
