@@ -2,6 +2,7 @@ const browserify = require('browserify');
 const buffer = require('vinyl-buffer');
 const gulp = require('gulp');
 const gutil = require('gulp-util');
+const htmlmin = require('gulp-htmlmin');
 const path = require('path');
 const source = require('vinyl-source-stream');
 const uglify = require('gulp-uglify');
@@ -16,6 +17,12 @@ const js_app_source_path = path.join(js_source_dir, 'main.js');
 const dest_dir = path.join(__dirname, 'public');
 const assets_dir = path.join(dest_dir, 'assets');
 const js_app_dest_dir = path.join(assets_dir, 'js');
+
+gulp.task('html', () =>
+    gulp.src(html_source_path)
+        .pipe(htmlmin({collapseWhitespace: true}))
+        .pipe(gulp.dest(dest_dir))
+);
 
 gulp.task('js', () => {
     const bundler = browserify(js_app_source_path, {
