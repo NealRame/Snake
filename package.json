@@ -1,0 +1,26 @@
+{
+  "name": "nr-snake",
+  "version": "0.0.1",
+  "description": "It's a snaaake!",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/NealRame/Snake.git"
+  },
+  "keywords": [
+    "snake",
+    "game",
+    "html5",
+    "javascript",
+    "babel",
+    "es2015"
+  ],
+  "author": "NealRame <julien@graziano.fr>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/NealRame/Snake/issues"
+  },
+  "homepage": "https://github.com/NealRame/Snake#readme"
+}
