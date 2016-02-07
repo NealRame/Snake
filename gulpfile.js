@@ -23,11 +23,14 @@ const assets_dir = path.join(dest_dir, 'assets');
 const css_dest_dir = path.join(assets_dir, 'css');
 const js_dest_dir = path.join(assets_dir, 'js');
 
+///////////////////////////////////////////////////////////////////////////////
+// HTML tasks /////////////////////////////////////////////////////////////////
 gulp.task('html', () =>
     gulp.src(html_source_path)
         .pipe(htmlmin({collapseWhitespace: true}))
         .pipe(gulp.dest(dest_dir))
 );
+gulp.task('html-watch', () => gulp.watch(html_source_path, ['html']));
 
 gulp.task('js', () => {
     const bundler = browserify(js_app_source_path, {
