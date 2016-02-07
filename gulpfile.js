@@ -92,4 +92,7 @@ gulp.task('css-watch', () =>
     gulp.watch(path.join(sass_source_dir, '**', '*.scss'), ['css'])
 );
 
+///////////////////////////////////////////////////////////////////////////////
+// Macro tasks ////////////////////////////////////////////////////////////////
+gulp.task('watch', ['css-watch', 'html-watch', 'js-watch']);
 gulp.task('default', ['css', 'html', 'js']);
