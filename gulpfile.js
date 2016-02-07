@@ -6,6 +6,7 @@ const htmlmin = require('gulp-htmlmin');
 const path = require('path');
 const sass = require('gulp-sass');
 const source = require('vinyl-source-stream');
+const sourcemaps = require('gulp-sourcemaps');
 const uglify = require('gulp-uglify');
 const watchify = require('watchify');
 
@@ -52,7 +53,9 @@ function bundle(bundler) {
         })
         .pipe(source('snake.js'))
         .pipe(buffer())
-        .pipe(uglify())
+        .pipe(sourcemaps.init({loadMaps: true, debug: true}))
+            .pipe(uglify())
+        .pipe(sourcemaps.write('./'))
         .pipe(gulp.dest(js_dest_dir));
 }
 
@@ -82,10 +85,12 @@ gulp.task('js-watch', () => bundle(create_watchify_bundler(bundle)));
 // CSS tasks //////////////////////////////////////////////////////////////////
 gulp.task('css', () =>
     gulp.src(sass_source_path)
-        .pipe(sass({
-            includePaths: [sass_source_dir],
-            outputStyle: 'compressed'
-        }).on('error', sass.logError))
+        .pipe(sourcemaps.init({loadMaps: true, debug: true}))
+            .pipe(sass({
+                includePaths: [sass_source_dir],
+                outputStyle: 'compressed'
+            }).on('error', sass.logError))
+        .pipe(sourcemaps.write('./'))
         .pipe(gulp.dest(css_dest_dir))
 );
 gulp.task('css-watch', () =>
