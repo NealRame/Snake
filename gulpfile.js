@@ -52,6 +52,8 @@ gulp.task('js', () => {
         .pipe(gulp.dest(js_dest_dir));
 });
 
+///////////////////////////////////////////////////////////////////////////////
+// CSS tasks //////////////////////////////////////////////////////////////////
 gulp.task('css', () =>
     gulp.src(sass_source_path)
         .pipe(sass({
@@ -59,6 +61,9 @@ gulp.task('css', () =>
             outputStyle: 'compressed'
         }).on('error', sass.logError))
         .pipe(gulp.dest(css_dest_dir))
+);
+gulp.task('css-watch', () =>
+    gulp.watch(path.join(sass_source_dir, '**', '*.scss'), ['css'])
 );
 
 gulp.task('default', ['css', 'html', 'js']);
