@@ -7,6 +7,7 @@ const path = require('path');
 const sass = require('gulp-sass');
 const source = require('vinyl-source-stream');
 const uglify = require('gulp-uglify');
+const watchify = require('watchify');
 
 const source_dir = path.join(__dirname, 'src');
 
@@ -32,14 +33,17 @@ gulp.task('html', () =>
 );
 gulp.task('html-watch', () => gulp.watch(html_source_path, ['html']));
 
-gulp.task('js', () => {
-    const bundler = browserify(js_app_source_path, {
-        debug: true,
-        paths: ['node_modules', js_source_dir],
-        transform: [
-            ['babelify', {presets: ["es2015"]}]
-        ]
-    });
+///////////////////////////////////////////////////////////////////////////////
+// Js tasks ///////////////////////////////////////////////////////////////////
+const browserify_base_options = {
+    debug: true,
+    paths: ['node_modules', js_source_dir],
+    transform: [
+        ['babelify', {presets: ["es2015"]}]
+    ]
+};
+
+function bundle(bundler) {
     return bundler
         .bundle()
         .on('error', (err) => {
@@ -50,7 +54,29 @@ gulp.task('js', () => {
         .pipe(buffer())
         .pipe(uglify())
         .pipe(gulp.dest(js_dest_dir));
-});
+}
+
+function create_browserify_bundler(options) {
+    return browserify(
+        js_app_source_path,
+        Object.assign({}, browserify_base_options, options || {})
+    );
+}
+
+function create_watchify_bundler(bundle) {
+    const bundler = watchify(create_browserify_bundler(watchify.args));
+    bundler
+        .on('update', (ids) => {
+            gutil.log('Update:');
+            ids.forEach((id) => gutil.log(` - ${id}`))
+            bundle(bundler);
+        })
+        .on('log', gutil.log)
+    return bundler;
+}
+
+gulp.task('js', () => bundle(create_browserify_bundler()));
+gulp.task('js-watch', () => bundle(create_watchify_bundler(bundle)));
 
 ///////////////////////////////////////////////////////////////////////////////
 // CSS tasks //////////////////////////////////////////////////////////////////
