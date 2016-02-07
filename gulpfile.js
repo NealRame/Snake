@@ -10,6 +10,9 @@ const sourcemaps = require('gulp-sourcemaps');
 const uglify = require('gulp-uglify');
 const watchify = require('watchify');
 
+///////////////////////////////////////////////////////////////////////////////
+// Config variables  //////////////////////////////////////////////////////////
+
 const source_dir = path.join(__dirname, 'src');
 
 const html_source_path = path.join(source_dir, 'index.html');
