@@ -6,9 +6,10 @@ export default function Screen(element) {
 			context.fillStyle = color;
 			context.fillRect(x, y, width, height);
 			context.restore();
+			return this;
 		},
 		clear(color = '#000') {
-			this.drawRect({
+			return this.drawRect({
 				x: 0,
 				y: 0,
 				width: element.width,
