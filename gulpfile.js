@@ -56,7 +56,8 @@ function bundle(bundler) {
         })
         .pipe(source('snake.js'))
         .pipe(buffer())
-        .pipe(sourcemaps.init({loadMaps: true, debug: true}))
+        // .pipe(sourcemaps.init({loadMaps: true, debug: true}))
+        .pipe(sourcemaps.init({loadMaps: true}))
             .pipe(uglify())
         .pipe(sourcemaps.write('./'))
         .pipe(gulp.dest(js_dest_dir));
@@ -88,7 +89,8 @@ gulp.task('js-watch', () => bundle(create_watchify_bundler(bundle)));
 // CSS tasks //////////////////////////////////////////////////////////////////
 gulp.task('css', () =>
     gulp.src(sass_source_path)
-        .pipe(sourcemaps.init({loadMaps: true, debug: true}))
+        // .pipe(sourcemaps.init({loadMaps: true, debug: true}))
+        .pipe(sourcemaps.init({loadMaps: true}))
             .pipe(sass({
                 includePaths: [sass_source_dir],
                 outputStyle: 'compressed'
