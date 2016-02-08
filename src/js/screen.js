@@ -15,6 +15,18 @@ export default function Screen(element) {
 				width: element.width,
 				height: element.height
 			}, color);
+		},
+		get width() {
+			return element.width;
+		},
+		get height() {
+			return element.height;
+		},
+		get size() {
+			return {
+				width: this.width,
+				height: this.height
+			};
 		}
 	};
 }
