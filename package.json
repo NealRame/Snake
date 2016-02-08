@@ -44,8 +44,9 @@
       "modules": true
     },
     "env": {
-      "node": true,
-      "es6": true
+      "browser": true,
+      "es6": true,
+      "node": true
     },
     "rules": {
       "camelcase": 0,
