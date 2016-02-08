@@ -43,7 +43,7 @@ const browserify_base_options = {
     debug: true,
     paths: ['node_modules', js_source_dir],
     transform: [
-        ['babelify', {presets: ["es2015"]}]
+        ['babelify', {presets: ['es2015'], plugins: ['transform-runtime']}]
     ]
 };
 
