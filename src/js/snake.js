@@ -61,7 +61,9 @@ export default function Snake({width, height}, speed = 40) {
 				let head = segments[0];
 				if (existy(head)) {
 					if (!equals(next_direction, current_direction)) {
-						next_direction = current_direction = update_direction(current_direction, next_direction);
+						next_direction =
+						current_direction =
+						update_direction(current_direction, next_direction);
 					}
 					head = add(head, current_direction);
 					head.x = (head.x + width)%width;
