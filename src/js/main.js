@@ -1,4 +1,3 @@
-import {dispatch} from 'functional';
 import Food from 'food';
 import Snake from 'snake';
 import ui from 'ui';
