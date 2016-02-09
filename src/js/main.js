@@ -4,24 +4,27 @@ import ui from 'ui';
 
 const snake = Snake({width: ui.screen.width/10, height: ui.screen.height/10}, 20);
 
-ui.on(
-	'direction-changed',
-	dispatch(
-		(direction) => {
-			if (direction === 'north' && snake.direction === 'south'
-					|| direction === 'south' && snake.direction === 'north') {
-				return true;
-			}
-		},
-		(direction) => {
-			if (direction === 'east' && snake.direction === 'west'
-					|| direction === 'west' && snake.direction === 'east') {
-				return true;
-			}
-		},
-		(direction) => snake.direction = direction
-	)
-);
+let pause = false;
+
+ui.on('direction-changed', dispatch(
+	(direction) => {
+		if (direction === 'north' && snake.direction === 'south'
+				|| direction === 'south' && snake.direction === 'north') {
+			return true;
+		}
+	},
+	(direction) => {
+		if (direction === 'east' && snake.direction === 'west'
+				|| direction === 'west' && snake.direction === 'east') {
+			return true;
+		}
+	},
+	(direction) => {
+		if (!pause) {
+			snake.direction = direction;
+		}
+	}
+)).on('pause', () => pause = !pause);
 
 function draw_snake() {
 	const screen = ui.screen;
@@ -43,7 +46,9 @@ function run(ts = 0) {
 	window.requestAnimationFrame(run);
 	ui.screen.clear();
 	draw_snake();
-	snake.step(ts);
+	if (!pause) {
+		snake.step(ts);
+	}
 	if (snake.collides()) {
 		snake.reset();
 	}
