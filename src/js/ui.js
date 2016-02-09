@@ -11,7 +11,9 @@ const keycode_to_event = dispatch(
 	(keycode) => keycode === 37 ? ['direction-changed', 'west']  : null,
 	(keycode) => keycode === 38 ? ['direction-changed', 'north'] : null,
 	(keycode) => keycode === 39 ? ['direction-changed', 'east']  : null,
-	(keycode) => keycode === 40 ? ['direction-changed', 'south'] : null
+	(keycode) => keycode === 40 ? ['direction-changed', 'south'] : null,
+	(keycode) => keycode === 80 ? ['pause'] : null
+	// (keycode) => console.log(keycode)
 );
 
 document.addEventListener('keydown', (ev) => {
