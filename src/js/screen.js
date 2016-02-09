@@ -16,6 +16,18 @@ export default function Screen(element) {
 				height: element.height
 			}, color);
 		},
+		push() {
+			context.save();
+		},
+		pop() {
+			context.restore();
+		},
+		scale(k) {
+			context.scale(k, k);
+		},
+		translate({x, y}) {
+			context.translate(x, y);
+		},
 		get width() {
 			return element.width;
 		},
