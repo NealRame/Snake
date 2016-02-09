@@ -28,6 +28,14 @@ const move = dispatch(
 	}
 );
 
+function equals({x: x1, y: y1}, {x: x2, y: y2}) {
+	return x1 === x2 && y1 === y2;
+}
+
+function copy({x, y}) {
+	return {x, y};
+}
+
 export default function Snake({width, height}, speed = 40) {
 	let d_step = 1/speed;
 	let last_ts = 0;
@@ -44,9 +52,13 @@ export default function Snake({width, height}, speed = 40) {
 		},
 		collides() {
 			const head = segments[0];
-			return segments.some((segment, index) =>
-				index > 0 && segment.x === head.x && segment.y === head.y
+			return (
+				existy(head)
+					&& segments.some((segment, index) => index > 0 && equals(segment, head))
 			);
+		},
+		occupies({x, y}) {
+			return equals(segments[0], {x, y});
 		},
 		step(ts) {
 			if ((ts - last_ts)/1000 > d_step) {
@@ -63,11 +75,7 @@ export default function Snake({width, height}, speed = 40) {
 			return this;
 		},
 		get head() {
-			const head = segments[0];
-			return {
-				x: head.x,
-				y: head.y
-			};
+			return copy(segments[0]);
 		},
 		get direction() {
 			return direction;
