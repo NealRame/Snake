@@ -41,6 +41,7 @@ export default function Snake({width, height}, speed = 40) {
 	let last_ts = 0;
 	let direction = 'east';
 	let segments = [];
+	let grow = false;
 	return {
 		reset() {
 			direction = 'east';
@@ -67,12 +68,18 @@ export default function Snake({width, height}, speed = 40) {
 					head = move(head, direction);
 					head.x = (head.x + width)%width;
 					head.y = (head.y + height)%height;
-					segments.pop();
+					if (!grow) {
+						segments.pop();
+					}
+					grow = false;
 					segments.unshift(head);
 				}
 				last_ts = ts;
 			}
 			return this;
+		},
+		grow() {
+			grow = true;
 		},
 		get head() {
 			return copy(segments[0]);
