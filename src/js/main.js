@@ -64,6 +64,7 @@ function run(ts = 0) {
 		ui.setScore(score);
 		ui.setHighScore(high_score);
 		food.reset();
+		snake.grow();
 	}
 	draw_snake(ui.screen, snake);
 	draw_food(ui.screen, food);
