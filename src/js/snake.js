@@ -36,6 +36,10 @@ function copy({x, y}) {
 	return {x, y};
 }
 
+export const NORTH = {x:  0, y: -1};
+export const EAST  = {x:  1, y:  0};
+export const SOUTH = {x:  0, y:  1};
+export const WEST  = {x: -1, y:  0};
 export default function Snake({width, height}, speed = 40) {
 	let d_step = 1/speed;
 	let last_ts = 0;
