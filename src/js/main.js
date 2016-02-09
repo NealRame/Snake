@@ -10,25 +10,9 @@ let pause = false;
 let score = 0;
 let high_score = 0;
 
-ui.on('direction-changed', dispatch(
-	(direction) => {
-		if (direction === 'north' && snake.direction === 'south'
-				|| direction === 'south' && snake.direction === 'north') {
-			return true;
-		}
-	},
-	(direction) => {
-		if (direction === 'east' && snake.direction === 'west'
-				|| direction === 'west' && snake.direction === 'east') {
-			return true;
-		}
-	},
-	(direction) => {
-		if (!pause) {
-			snake.direction = direction;
-		}
-	}
-)).on('pause', () => pause = !pause);
+ui
+	.on('direction-changed', (direction) => snake.direction = direction)
+	.on('pause', () => pause = !pause);
 
 function draw_snake(screen, snake) {
 	const box = {x: 0, y:0, width: 1, height: 1};
