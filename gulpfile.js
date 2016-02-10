@@ -1,9 +1,10 @@
 const browserify = require('browserify');
 const buffer = require('vinyl-buffer');
 const gulp = require('gulp');
-const gutil = require('gulp-util');
 const gulpif = require('gulp-if');
+const gutil = require('gulp-util');
 const htmlmin = require('gulp-htmlmin');
+const livereload = require('gulp-livereload');
 const path = require('path');
 const sass = require('gulp-sass');
 const source = require('vinyl-source-stream');
@@ -41,6 +42,7 @@ gulp.task('html', () =>
     gulp.src(html_source_path)
         .pipe(htmlmin({collapseWhitespace: true}))
         .pipe(gulp.dest(dest_dir))
+        .pipe(gulpif(is_dev(), livereload()))
 );
 gulp.task('html-watch', () => gulp.watch(html_source_path, ['html']));
 
@@ -72,7 +74,8 @@ function bundle(bundler) {
         .pipe(sourcemaps.init({loadMaps: true}))
             .pipe(gulpif(!is_dev(), uglify()))
         .pipe(gulpif(is_dev(), sourcemaps.write('./')))
-        .pipe(gulp.dest(js_dest_dir));
+        .pipe(gulp.dest(js_dest_dir))
+        .pipe(gulpif(is_dev(), livereload()));
 }
 
 function create_browserify_bundler(options) {
@@ -109,6 +112,7 @@ gulp.task('css', () =>
             }).on('error', sass.logError))
         .pipe(gulpif(is_dev(), sourcemaps.write('./')))
         .pipe(gulp.dest(css_dest_dir))
+        .pipe(gulpif(is_dev(), livereload()))
 );
 gulp.task('css-watch', () =>
     gulp.watch(path.join(sass_source_dir, '**', '*.scss'), ['css'])
@@ -116,5 +120,9 @@ gulp.task('css-watch', () =>
 
 ///////////////////////////////////////////////////////////////////////////////
 // Macro tasks ////////////////////////////////////////////////////////////////
-gulp.task('watch', ['css-watch', 'html-watch', 'js-watch']);
+gulp.task(
+    'watch',
+    ['css-watch', 'html-watch', 'js-watch'],
+    () => livereload.listen()
+);
 gulp.task('default', ['css', 'html', 'js']);
