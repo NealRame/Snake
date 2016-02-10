@@ -25,21 +25,14 @@ function draw_food(screen, food) {
 	screen.pop();
 }
 
-export default function Game(ui) {
+export default function Game({keyboard, screen}) {
 	const event_emitter = new EventEmitter();
-	const screen = ui.screen;
 	const snake = Snake({width: screen.width/10, height: screen.height/10}, 20);
 	const food = Food({width: screen.width/10, height: screen.height/10});
 
 	let animation_id = null;
 	let score = 0;
 	let high_score = 0;
-
-	function reset() {
-		window.cancelAnimationFrame(animation_id);
-		snake.reset();
-		food.reset();
-	}
 
 	function run(ts = 0) {
 		animation_id = window.requestAnimationFrame(run);
@@ -56,29 +49,43 @@ export default function Game(ui) {
 		draw_food(screen, food);
 		snake.step(ts);
 		if (snake.collides()) {
-			window.cancelAnimationFrame(animation_id);
-			animation_id = null;
+			stop_game();
+			event_emitter.emit('finished');
 		}
 	}
 
+	function reset() {
+		snake.reset();
+		food.reset();
+	}
+
+	function stop_game() {
+		window.cancelAnimationFrame(animation_id);
+		keyboard.removeAllListeners('direction-changed');
+		animation_id = null;
+	}
+
+	function start_game() {
+		animation_id = window.requestAnimationFrame(run);
+		keyboard.on('direction-changed', (direction) => snake.direction = direction);
+	}
+	
 	return Object.assign(Object.create(event_emitter), {
 		start()	{
 			if (!existy(animation_id)) {
 				reset();
-				run();
-				ui.on('pause', () => this.togglePause());
-
+				start_game();
+				event_emitter.emit('started');
 			}
+			return this;
 		},
 		togglePause() {
 			if (existy(animation_id)) {
-				ui.removeAllListeners('direction-changed');
-				window.cancelAnimationFrame(animation_id);
-				animation_id = null;
+				stop_game();
 			} else {
-				ui.on('direction-changed', (direction) => snake.direction = direction);
-				run();
+				start_game();
 			}
+			return this;
 		}
 	});
 }
