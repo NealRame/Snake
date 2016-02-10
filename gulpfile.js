@@ -2,6 +2,7 @@ const browserify = require('browserify');
 const buffer = require('vinyl-buffer');
 const gulp = require('gulp');
 const gutil = require('gulp-util');
+const gulpif = require('gulp-if');
 const htmlmin = require('gulp-htmlmin');
 const path = require('path');
 const sass = require('gulp-sass');
@@ -29,6 +30,12 @@ const css_dest_dir = path.join(assets_dir, 'css');
 const js_dest_dir = path.join(assets_dir, 'js');
 
 ///////////////////////////////////////////////////////////////////////////////
+// Utils
+function is_dev() {
+    return ['development', 'dev'].indexOf((process.env.NODE_ENV || '').toLowerCase()) > 0;
+}
+
+///////////////////////////////////////////////////////////////////////////////
 // HTML tasks /////////////////////////////////////////////////////////////////
 gulp.task('html', () =>
     gulp.src(html_source_path)
@@ -43,7 +50,12 @@ const browserify_base_options = {
     debug: true,
     paths: ['node_modules', js_source_dir],
     transform: [
-        ['babelify', {presets: ['es2015'], plugins: ['transform-runtime']}]
+        [
+            'babelify', {
+                presets: ['es2015'],
+                plugins: ['transform-runtime']
+            }
+        ]
     ]
 };
 
@@ -58,8 +70,8 @@ function bundle(bundler) {
         .pipe(buffer())
         // .pipe(sourcemaps.init({loadMaps: true, debug: true}))
         .pipe(sourcemaps.init({loadMaps: true}))
-            .pipe(uglify())
-        .pipe(sourcemaps.write('./'))
+            .pipe(gulpif(!is_dev(), uglify()))
+        .pipe(gulpif(is_dev(), sourcemaps.write('./')))
         .pipe(gulp.dest(js_dest_dir));
 }
 
@@ -95,7 +107,7 @@ gulp.task('css', () =>
                 includePaths: [sass_source_dir],
                 outputStyle: 'compressed'
             }).on('error', sass.logError))
-        .pipe(sourcemaps.write('./'))
+        .pipe(gulpif(is_dev(), sourcemaps.write('./')))
         .pipe(gulp.dest(css_dest_dir))
 );
 gulp.task('css-watch', () =>
