@@ -20,6 +20,7 @@ h1 {
     border: solid 2px $body-fg-color;
     display: block;
     margin: 0 auto;
+    z-index: 1;
 }
 #scores-area {
     margin: 1rem auto;
@@ -36,5 +37,27 @@ h1 {
         h2 {
             margin-right: 1rem;
         }
+    }
+}
+#message-box {
+    font-family: 'VT323', sans-serif;
+    opacity: 0;
+    text-align: center;
+    transition: opacity .25s ease-out;
+    z-index: 0;
+    &[data-visible="yes"] {
+        opacity: 1;
+        transition: opacity .25s ease-in;
+        z-index: 2;
+    }
+    h1 {
+        border: none;
+        color: $message-box-title-color;
+        margin: 0;
+        padding: 0;
+    }
+    span {
+        color: $message-box-color;
+        font-style: normal;
     }
 }
