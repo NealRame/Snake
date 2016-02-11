@@ -10,6 +10,19 @@ ui.keyboard
 	.on('pause', game.togglePause.bind(game));
 
 game
-	.on('started', ui.clearScore.bind(ui))
+	.on('started', () => {
+		ui.clearScore();
+		ui.hideMessage();
+	})
+	.on('finished', () => {
+		ui.showMessage('Press \'space\' to start.', 'Game Over');
+	})
+	.on('paused', () => {
+		ui.screen.clear();
+		ui.showMessage('Press \'P\' to resume.', 'Pause');
+	})
+	.on('resumed', () => {
+		ui.hideMessage();
+	})
 	.on('score', ui.setScore.bind(ui))
 	.on('high-score', ui.setHighScore.bind(ui));
