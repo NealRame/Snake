@@ -69,7 +69,7 @@ export default function Game({keyboard, screen}) {
 		animation_id = window.requestAnimationFrame(run);
 		keyboard.on('direction-changed', (direction) => snake.direction = direction);
 	}
-	
+
 	return Object.assign(Object.create(event_emitter), {
 		start()	{
 			if (!existy(animation_id)) {
