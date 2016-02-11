@@ -40,8 +40,12 @@ h1 {
     }
 }
 #message-box {
+    border: 1px solid $body-fg-color;
     font-family: 'VT323', sans-serif;
     opacity: 0;
+    padding: .5rem;
+    padding-top: .25rem;
+    position: absolute;
     text-align: center;
     transition: opacity .25s ease-out;
     z-index: 0;
