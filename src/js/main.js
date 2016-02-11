@@ -4,6 +4,7 @@ import Game from 'game';
 const game = Game(ui);
 
 ui.screen.clear();
+ui.showMessage('Press \'space\' to start.');
 
 ui.keyboard
 	.on('start', game.start.bind(game))
