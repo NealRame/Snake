@@ -82,8 +82,10 @@ export default function Game({keyboard, screen}) {
 		togglePause() {
 			if (existy(animation_id)) {
 				stop_game();
+				event_emitter.emit('paused');
 			} else {
 				start_game();
+				event_emitter.emit('resumed');
 			}
 			return this;
 		}
