@@ -2,8 +2,6 @@ import ui from 'ui';
 import Game from 'game';
 import {keyboard, MODE_UI, MODE_GAME} from 'keyboard';
 
-
-
 window.addEventListener('load', () => {
 	const game = Game(ui.screen);
 
