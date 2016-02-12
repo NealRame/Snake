@@ -17,8 +17,9 @@ window.addEventListener('load', () => {
 	});
 
 	game
-		.on('started', () => {
-			ui.clearScore();
+		.on('started', (score) => {
+			ui.setScore(score.value);
+			ui.setHighScore(score.best);
 		})
 		.on('finished', () => {
 			keyboard.setMode(MODE_UI);
@@ -32,7 +33,8 @@ window.addEventListener('load', () => {
 		.on('resumed', () => {
 			ui.hideMessage();
 		})
-		.on('score', ui.setScore.bind(ui))
-		.on('high-score', ui.setHighScore.bind(ui));
-
+		.on('score', (score) => {
+			ui.setScore(score.value);
+			ui.setHighScore(score.best);
+		});
 });

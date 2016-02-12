@@ -2,6 +2,7 @@ import {dispatch, existy} from 'functional';
 import {EventEmitter} from 'events';
 import keyboard from 'keyboard';
 import Food from 'food';
+import Score from 'score';
 import Snake from 'snake';
 
 const level_to_speed = dispatch(
@@ -43,17 +44,14 @@ export default function Game(screen) {
 
 	let snake, food;
 	let animation_id = null;
-	let score = 0;
-	let high_score = 0;
+	let score = null;
 
 	function run(ts = 0) {
 		animation_id = window.requestAnimationFrame(run);
 		screen.clear();
 		if (snake.occupies(food.position)) {
-			score += food.points;
-			high_score = Math.max(score, high_score);
+			score.add(food.points);
 			event_emitter.emit('score', score);
-			event_emitter.emit('high-score', high_score);
 			food.reset();
 			snake.grow();
 		}
@@ -67,7 +65,7 @@ export default function Game(screen) {
 	}
 
 	function reset(level) {
-		score = 0;
+		score = Score(level);
 		snake = Snake({width: screen.width/10, height: screen.height/10}, level_to_speed(level));
 		food = Food({width: screen.width/10, height: screen.height/10}, level_to_point(level));
 		keyboard.removeAllListeners('direction-changed');
@@ -101,7 +99,7 @@ export default function Game(screen) {
 			if (!existy(animation_id)) {
 				reset(level);
 				start_game();
-				event_emitter.emit('started');
+				event_emitter.emit('started', score);
 			}
 			return this;
 		}
