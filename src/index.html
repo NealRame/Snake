@@ -19,7 +19,16 @@
             </div>
         </div>
         <canvas id="screen" width="500px" height="500px" style="width: 500px; height: 500px;"></canvas>
-        <div id="message-box" data-visible="yes"></div>
+        <div id="message-box" data-visible="no"></div>
+        <div id="menu-box" data-visible="no">
+            <h1>Game Over</h1>
+            <span>Select level and press 'Enter' to start</span>
+            <ul>
+                <li class="active" data-level="easy">Easy</li>
+                <li data-level="normal">Normal</li>
+                <li data-level="hard">Hard</li>
+            </ul>
+        </div>
         <script type="text/javascript" src="./assets/js/snake.js"></script>
     </body>
 </html>

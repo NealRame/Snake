@@ -1,29 +1,40 @@
 import ui from 'ui';
 import Game from 'game';
+import {keyboard, MODE_UI, MODE_GAME} from 'keyboard';
 
-const game = Game(ui);
 
-ui.screen.clear();
-ui.showMessage('Press \'space\' to start.');
 
-ui.keyboard
-	.on('start', game.start.bind(game))
-	.on('pause', game.togglePause.bind(game));
+window.addEventListener('load', () => {
+	const game = Game(ui.screen);
 
-game
-	.on('started', () => {
-		ui.clearScore();
-		ui.hideMessage();
-	})
-	.on('finished', () => {
-		ui.showMessage('Press \'space\' to start.', 'Game Over');
-	})
-	.on('paused', () => {
-		ui.screen.clear();
-		ui.showMessage('Press \'P\' to resume.', 'Pause');
-	})
-	.on('resumed', () => {
-		ui.hideMessage();
-	})
-	.on('score', ui.setScore.bind(ui))
-	.on('high-score', ui.setHighScore.bind(ui));
+	keyboard.setMode(MODE_UI);
+
+	ui.screen.clear();
+	ui.showMenu();
+
+	ui.on('start', (level) => {
+		keyboard.setMode(MODE_GAME);
+		ui.hideMenu();
+		game.start(level);
+	});
+
+	game
+		.on('started', () => {
+			ui.clearScore();
+		})
+		.on('finished', () => {
+			keyboard.setMode(MODE_UI);
+			ui.screen.clear();
+			ui.showMenu();
+		})
+		.on('paused', () => {
+			ui.screen.clear();
+			ui.showMessage('Press \'space\' to resume.', 'Pause');
+		})
+		.on('resumed', () => {
+			ui.hideMessage();
+		})
+		.on('score', ui.setScore.bind(ui))
+		.on('high-score', ui.setHighScore.bind(ui));
+
+});

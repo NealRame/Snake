@@ -35,17 +35,13 @@ export default function Snake({width, height}, speed = 40) {
 	let last_ts = 0;
 	let current_direction = EAST;
 	let next_direction = EAST;
-	let segments = [];
+	let segments = [
+		{x: width/2 + 1, y: height/2},
+		{x: width/2,     y: height/2},
+		{x: width/2 - 1, y: height/2}
+	];
 	let grow = false;
 	return {
-		reset() {
-			current_direction = EAST;
-			segments = [
-				{x: width/2 + 1, y: height/2},
-				{x: width/2,     y: height/2},
-				{x: width/2 - 1, y: height/2}
-			];
-		},
 		collides() {
 			const head = segments[0];
 			return (

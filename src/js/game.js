@@ -1,7 +1,20 @@
-import {existy} from 'functional';
+import {dispatch, existy} from 'functional';
 import {EventEmitter} from 'events';
+import keyboard from 'keyboard';
 import Food from 'food';
 import Snake from 'snake';
+
+const level_to_speed = dispatch(
+	(level) => level === 'easy'   ? 10 : null,
+	(level) => level === 'normal' ? 20 : null,
+	() => 40
+);
+
+const level_to_point = dispatch(
+	(level) => level === 'easy'   ?  5 : null,
+	(level) => level === 'normal' ? 10 : null,
+	() => 20
+);
 
 function draw_snake(screen, snake) {
 	const box = {x: 0, y:0, width: 1, height: 1};
@@ -25,11 +38,10 @@ function draw_food(screen, food) {
 	screen.pop();
 }
 
-export default function Game({keyboard, screen}) {
+export default function Game(screen) {
 	const event_emitter = new EventEmitter();
-	const snake = Snake({width: screen.width/10, height: screen.height/10}, 20);
-	const food = Food({width: screen.width/10, height: screen.height/10});
 
+	let snake, food;
 	let animation_id = null;
 	let score = 0;
 	let high_score = 0;
@@ -54,38 +66,42 @@ export default function Game({keyboard, screen}) {
 		}
 	}
 
-	function reset() {
-		snake.reset();
-		food.reset();
+	function reset(level) {
+		score = 0;
+		snake = Snake({width: screen.width/10, height: screen.height/10}, level_to_speed(level));
+		food = Food({width: screen.width/10, height: screen.height/10}, level_to_point(level));
+		keyboard.removeAllListeners('direction-changed');
+		keyboard.on('direction-changed', (direction) => snake.direction = direction);
 	}
 
 	function stop_game() {
 		window.cancelAnimationFrame(animation_id);
-		keyboard.removeAllListeners('direction-changed');
 		animation_id = null;
 	}
 
 	function start_game() {
 		animation_id = window.requestAnimationFrame(run);
-		keyboard.on('direction-changed', (direction) => snake.direction = direction);
 	}
 
+	function toggle_pause() {
+		if (existy(animation_id)) {
+			stop_game();
+			event_emitter.emit('paused');
+		} else {
+			start_game();
+			event_emitter.emit('resumed');
+		}
+		return this;
+	}
+
+	keyboard.on('pause', toggle_pause);
+
 	return Object.assign(Object.create(event_emitter), {
-		start()	{
+		start(level) {
 			if (!existy(animation_id)) {
-				reset();
+				reset(level);
 				start_game();
 				event_emitter.emit('started');
-			}
-			return this;
-		},
-		togglePause() {
-			if (existy(animation_id)) {
-				stop_game();
-				event_emitter.emit('paused');
-			} else {
-				start_game();
-				event_emitter.emit('resumed');
 			}
 			return this;
 		}

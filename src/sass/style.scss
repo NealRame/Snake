@@ -39,7 +39,7 @@ h1 {
         }
     }
 }
-#message-box {
+#menu-box, #message-box {
     border: 1px solid $body-fg-color;
     font-family: 'VT323', sans-serif;
     opacity: 0;
@@ -57,11 +57,23 @@ h1 {
     h1 {
         border: none;
         color: $message-box-title-color;
+        font-size: 1.25rem;
         margin: 0;
+        margin-bottom: .25rem;
         padding: 0;
     }
     span {
         color: $message-box-color;
         font-style: normal;
+    }
+}
+#menu-box {
+    ul {
+        list-style-type: none;
+        padding: 0;
+        margin: 0;
+        li.active {
+            background-color: $body-bg-color;
+        }
     }
 }
