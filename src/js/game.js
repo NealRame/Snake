@@ -8,7 +8,7 @@ import Snake from 'snake';
 const level_to_speed = dispatch(
 	(level) => level === 'easy'   ? 10 : null,
 	(level) => level === 'normal' ? 20 : null,
-	() => 40
+	() => 30
 );
 
 const level_to_point = dispatch(
