@@ -42,7 +42,7 @@ export default function Game(screen) {
 			score.add(food.points);
 			event_emitter.emit('score', score);
 			food.reset();
-			snake.grow();
+			snake.grow(config.snake.grow);
 		}
 		draw_snake(screen, snake);
 		draw_food(screen, food);
