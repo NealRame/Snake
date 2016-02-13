@@ -9,7 +9,6 @@ window.addEventListener('load', () => {
 
 	ui.screen.clear();
 	ui.showMenu();
-
 	ui.on('start', (level) => {
 		keyboard.setMode(MODE_GAME);
 		ui.hideMenu();
@@ -19,7 +18,6 @@ window.addEventListener('load', () => {
 	game
 		.on('started', (score) => {
 			ui.setScore(score.value);
-			ui.setHighScore(score.best);
 		})
 		.on('finished', () => {
 			keyboard.setMode(MODE_UI);
