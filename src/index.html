@@ -8,22 +8,19 @@
     </head>
     <body>
         <h1>Snake</h1>
-        <div id="scores-area" style="width: 500px;">
-            <div class="score-item">
-                <h2>Score</h2>
-                <span id="score">0</span>
-            </div>
-            <div class="score-item">
-                <h2>High Score</h2>
-                <span id="high-score">0</span>
-            </div>
-        </div>
+        <div id="score" style="width: 500px;">--</div>
         <canvas id="screen" width="500px" height="500px" style="width: 500px; height: 500px;"></canvas>
         <div id="message-box" data-visible="no"></div>
         <div id="menu-box" data-visible="no">
             <h1>Game Over</h1>
-            <span>Select level and press 'Enter' to start</span>
-            <ul>
+            <h2>high scores</h2>
+            <ul id="high-scores">
+                <li>Easy: 123</li>
+                <li>Medium: 456</li>
+                <li>Hard: 789</li>
+            </ul>
+            <h2>Select level and press 'Enter' to start</h2>
+            <ul id="levels">
                 <li class="active" data-level="easy">Easy</li>
                 <li data-level="normal">Normal</li>
                 <li data-level="hard">Hard</li>

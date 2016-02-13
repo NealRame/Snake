@@ -1,14 +1,16 @@
 import {EventEmitter} from 'events';
+import Score from 'score';
 import Screen from 'screen';
 import keyboard from 'keyboard';
 
 const screen_ui = document.getElementById('screen');
 
 const score_ui = document.getElementById('score');
-const high_score_ui = document.getElementById('high-score');
 
 const menu_ui = document.getElementById('menu-box');
-const menu_ui_items = menu_ui.lastElementChild.children;
+const high_scores_ui = document.getElementById('high-scores');
+const levels_ui = document.getElementById('levels');
+const levels_ui_items = levels_ui.children;
 
 const message_ui = document.getElementById('message-box');
 
@@ -25,13 +27,13 @@ function center(child, parent) {
 
 function selected_menu_item_index() {
 	return Array.prototype.findIndex.call(
-		menu_ui_items,
+		levels_ui_items,
 		(item) => item.className === 'active'
 	);
 }
 
 function selected_menu_item() {
-	return menu_ui_items[selected_menu_item_index()];
+	return levels_ui_items[selected_menu_item_index()];
 }
 
 const ui = Object.assign(Object.create(new EventEmitter()), {
@@ -44,11 +46,14 @@ const ui = Object.assign(Object.create(new EventEmitter()), {
 		score_ui.innerHTML = `${v}`;
 		return this;
 	},
-	setHighScore(v) {
-		high_score_ui.innerHTML = `${v}`;
-		return this;
-	},
 	showMenu() {
+		high_scores_ui.innerHTML = '';
+		['easy', 'normal', 'hard'].forEach((level) => {
+			const high_score = Score(level).best;
+			const item = document.createElement('li');
+			item.innerHTML = `${level}: ${high_score}`;
+			high_scores_ui.appendChild(item);
+		});
 		Object.assign(menu_ui.style, center(menu_ui, screen_ui));
 		Object.assign(menu_ui.dataset, {visible: 'yes'});
 	},
@@ -78,13 +83,13 @@ const ui = Object.assign(Object.create(new EventEmitter()), {
 keyboard
 	.on('up', () => {
 		const index = selected_menu_item_index();
-		menu_ui_items[index].className = '';
-		menu_ui_items[(index + menu_ui_items.length - 1)%menu_ui_items.length].className = 'active';
+		levels_ui_items[index].className = '';
+		levels_ui_items[(index + levels_ui_items.length - 1)%levels_ui_items.length].className = 'active';
 	})
 	.on('down', () => {
 		const index = selected_menu_item_index();
-		menu_ui_items[index].className = '';
-		menu_ui_items[(index + 1)%menu_ui_items.length].className = 'active';
+		levels_ui_items[index].className = '';
+		levels_ui_items[(index + 1)%levels_ui_items.length].className = 'active';
 	})
 	.on('start', () => {
 		ui.emit('start', selected_menu_item().dataset.level);

@@ -35,6 +35,5 @@ window.addEventListener('load', () => {
 		})
 		.on('score', (score) => {
 			ui.setScore(score.value);
-			ui.setHighScore(score.best);
 		});
 });
