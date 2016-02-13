@@ -14,8 +14,8 @@ export default {
 		grow: 1,
 		speed: {
 			easy: 10,
-			normal: 20,
-			hard: 30
+			normal: 15,
+			hard: 20
 		}
 	},
 	screen: {
