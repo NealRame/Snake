@@ -33,6 +33,7 @@ export const WEST  = {x: -1, y:  0};
 export default function Snake({width, height}, speed = 40) {
 	let d_step = 1/speed;
 	let last_ts = 0;
+	let grow = 0;
 	let current_direction = EAST;
 	let next_direction = EAST;
 	let segments = [
@@ -40,13 +41,15 @@ export default function Snake({width, height}, speed = 40) {
 		{x: width/2,     y: height/2},
 		{x: width/2 - 1, y: height/2}
 	];
-	let grow = false;
 	return {
 		collides() {
 			const head = segments[0];
+			if (!existy(head)) {
+				return false;
+			}
 			return (
-				existy(head)
-					&& segments.some((segment, index) => index > 0 && equals(segment, head))
+				(head.x < 0 || head.x >= width || head.y < 0 || head.y >= height)
+					|| segments.some((segment, index) => index > 0 && equals(segment, head))
 			);
 		},
 		occupies({x, y}) {
@@ -62,20 +65,21 @@ export default function Snake({width, height}, speed = 40) {
 						update_direction(current_direction, next_direction);
 					}
 					head = add(head, current_direction);
-					head.x = (head.x + width)%width;
-					head.y = (head.y + height)%height;
-					if (!grow) {
+					// head.x = (head.x + width)%width;
+					// head.y = (head.y + height)%height;
+					if (grow === 0) {
 						segments.pop();
+					} else {
+						grow--;
 					}
-					grow = false;
 					segments.unshift(head);
 				}
 				last_ts = ts;
 			}
 			return this;
 		},
-		grow() {
-			grow = true;
+		grow(n = 1) {
+			grow = n;
 		},
 		get head() {
 			return copy(segments[0]);
