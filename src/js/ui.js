@@ -80,6 +80,11 @@ const ui = Object.assign(Object.create(new EventEmitter()), {
 	}
 });
 
+window.addEventListener('resize', () => {
+	Object.assign(menu_ui.style, center(menu_ui, screen_ui));
+	Object.assign(message_ui.style, center(message_ui, screen_ui));
+});
+
 keyboard
 	.on('up', () => {
 		const index = selected_menu_item_index();
