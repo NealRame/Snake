@@ -7,3 +7,13 @@
     font-weight: normal;
     font-style: normal;
 }
+
+i.nr {
+	&.nr-github {
+		&::before {
+			content: 'g';
+			font-family: 'NRSnakeUI';
+			font-style: normal;
+		}
+	}
+}
