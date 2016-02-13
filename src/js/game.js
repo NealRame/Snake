@@ -9,7 +9,7 @@ import Snake from 'snake';
 function draw_snake(screen, snake) {
 	const box = {x: 0, y:0, width: 1, height: 1};
 	screen.push();
-	screen.scale(10);
+	screen.scale(1/config.game.scale);
 	for (let segment of snake) {
 		screen.push();
 		screen.translate(segment);
@@ -22,7 +22,7 @@ function draw_snake(screen, snake) {
 function draw_food(screen, food) {
 	const box = {x: 0, y: 0, width: 1, height: 1};
 	screen.push();
-	screen.scale(10);
+	screen.scale(1/config.game.scale);
 	screen.translate(food.position);
 	screen.drawRect(box);
 	screen.pop();
