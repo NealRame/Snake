@@ -37,9 +37,9 @@ export default function Snake({width, height}, speed = 40, border_collides = tru
 	let current_direction = EAST;
 	let next_direction = EAST;
 	let segments = [
-		{x: width/2 + 1, y: height/2},
-		{x: width/2,     y: height/2},
-		{x: width/2 - 1, y: height/2}
+		{x: Math.floor(width/2) + 1, y: Math.floor(height/2)},
+		{x: Math.floor(width/2),     y: Math.floor(height/2)},
+		{x: Math.floor(width/2) - 1, y: Math.floor(height/2)}
 	];
 
 	function advance_head(head) {
