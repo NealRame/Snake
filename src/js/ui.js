@@ -1,4 +1,5 @@
 import {EventEmitter} from 'events';
+import config from 'config';
 import Score from 'score';
 import Screen from 'screen';
 import keyboard from 'keyboard';
@@ -36,8 +37,15 @@ function selected_menu_item() {
 	return levels_ui_items[selected_menu_item_index()];
 }
 
+Object.assign(screen_ui, config.screen);
+
+Object.assign(score_ui.style, {width: config.screen.width + 'px'});
+Object.assign(screen_ui.style, {
+	width: config.screen.width + 'px',
+	height: config.screen.height + 'px'
+});
+
 const ui = Object.assign(Object.create(new EventEmitter()), {
-	keyboard,
 	screen,
 	clearScore() {
 		score_ui.innerHTML = '0';

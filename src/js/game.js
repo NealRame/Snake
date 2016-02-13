@@ -1,21 +1,10 @@
-import {dispatch, existy} from 'functional';
+import {existy} from 'functional';
 import {EventEmitter} from 'events';
+import config from 'config';
 import keyboard from 'keyboard';
 import Food from 'food';
 import Score from 'score';
 import Snake from 'snake';
-
-const level_to_speed = dispatch(
-	(level) => level === 'easy'   ? 10 : null,
-	(level) => level === 'normal' ? 20 : null,
-	() => 30
-);
-
-const level_to_point = dispatch(
-	(level) => level === 'easy'   ?  5 : null,
-	(level) => level === 'normal' ? 10 : null,
-	() => 20
-);
 
 function draw_snake(screen, snake) {
 	const box = {x: 0, y:0, width: 1, height: 1};
@@ -65,9 +54,13 @@ export default function Game(screen) {
 	}
 
 	function reset(level) {
+		const rect = {
+			height: screen.height*config.game.scale,
+			width: screen.width*config.game.scale
+		};
+		food = Food(rect, config.food.points[level]);
+		snake = Snake(rect, config.snake.speed[level], config.game.borders);
 		score = Score(level);
-		snake = Snake({width: screen.width/10, height: screen.height/10}, level_to_speed(level));
-		food = Food({width: screen.width/10, height: screen.height/10}, level_to_point(level));
 		keyboard.removeAllListeners('direction-changed');
 		keyboard.on('direction-changed', (direction) => snake.direction = direction);
 	}
