@@ -19,6 +19,8 @@ const source_dir = path.join(__dirname, 'src');
 
 const html_source_path = path.join(source_dir, 'index.html');
 
+const font_source_path = path.join(source_dir, 'fonts');
+
 const sass_source_dir = path.join(source_dir, 'sass')
 const sass_source_path = path.join(sass_source_dir, 'style.scss');
 
@@ -28,6 +30,7 @@ const js_app_source_path = path.join(js_source_dir, 'main.js');
 const dest_dir = path.join(__dirname, 'public');
 const assets_dir = path.join(dest_dir, 'assets');
 const css_dest_dir = path.join(assets_dir, 'css');
+const font_dest_path = path.join(assets_dir, 'fonts');
 const js_dest_dir = path.join(assets_dir, 'js');
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -101,6 +104,16 @@ gulp.task('js', () => bundle(create_browserify_bundler()));
 gulp.task('js-watch', () => bundle(create_watchify_bundler(bundle)));
 
 ///////////////////////////////////////////////////////////////////////////////
+// Font tasks /////////////////////////////////////////////////////////////////
+gulp.task('fonts', () =>
+    gulp.src(path.join(font_source_path, '*'))
+        .pipe(gulp.dest(font_dest_path))
+);
+gulp.task('fonts-watch', () =>
+    gulp.watch(path.join(font_source_path, '*'), ['fonts'])
+);
+
+///////////////////////////////////////////////////////////////////////////////
 // CSS tasks //////////////////////////////////////////////////////////////////
 gulp.task('css', () =>
     gulp.src(sass_source_path)
@@ -125,4 +138,4 @@ gulp.task(
     ['css-watch', 'html-watch', 'js-watch'],
     () => livereload.listen()
 );
-gulp.task('default', ['css', 'html', 'js']);
+gulp.task('default', ['css', 'fonts', 'html', 'js']);
