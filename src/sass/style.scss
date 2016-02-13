@@ -72,3 +72,12 @@ h1 {
         margin-top: .5rem;
     }
 }
+#links {
+    margin-top: .5rem;
+    text-align: center;
+    #github {
+        color: $body-fg-color;
+        font-size: 3rem;
+        text-decoration: none;
+    }
+}
