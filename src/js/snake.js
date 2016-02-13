@@ -30,7 +30,7 @@ export const EAST  = {x:  1, y:  0};
 export const SOUTH = {x:  0, y:  1};
 export const WEST  = {x: -1, y:  0};
 
-export default function Snake({width, height}, speed = 40) {
+export default function Snake({width, height}, speed = 40, border_collides = true) {
 	let d_step = 1/speed;
 	let last_ts = 0;
 	let grow = 0;
@@ -41,6 +41,18 @@ export default function Snake({width, height}, speed = 40) {
 		{x: width/2,     y: height/2},
 		{x: width/2 - 1, y: height/2}
 	];
+
+	function advance_head(head) {
+		const advanced_head = add(head, current_direction);
+		if (!border_collides) {
+			return {
+				x: (advanced_head.x + width)%width,
+				y: (advanced_head.y + height)%height
+			}
+		}
+		return advanced_head;
+	}
+
 	return {
 		collides() {
 			const head = segments[0];
@@ -64,15 +76,12 @@ export default function Snake({width, height}, speed = 40) {
 						current_direction =
 						update_direction(current_direction, next_direction);
 					}
-					head = add(head, current_direction);
-					// head.x = (head.x + width)%width;
-					// head.y = (head.y + height)%height;
 					if (grow === 0) {
 						segments.pop();
 					} else {
 						grow--;
 					}
-					segments.unshift(head);
+					segments.unshift(advance_head(head));
 				}
 				last_ts = ts;
 			}
