@@ -93,6 +93,14 @@ window.addEventListener('resize', () => {
 	Object.assign(message_ui.style, center(message_ui, screen_ui));
 });
 
+Array.prototype.forEach.call(document.querySelectorAll('#levels li'), (item) => {
+	item.addEventListener('click', () => {
+		selected_menu_item().className = '';
+		item.className = 'active';
+		ui.emit('start', item.dataset.level);
+	});
+});
+
 keyboard
 	.on('up', () => {
 		const index = selected_menu_item_index();
