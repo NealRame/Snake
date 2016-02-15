@@ -60,8 +60,13 @@ h1 {
         list-style-type: none;
         padding: 0;
         margin: 0;
-        li.active {
-            background-color: $body-bg-color;
+        &#levels {
+            li {
+                cursor: pointer;
+                &.active {
+                    background-color: $body-bg-color;
+                }
+            }
         }
     }
     h2 {
